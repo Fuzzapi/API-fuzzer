@@ -7,10 +7,10 @@ Gem::Specification.new do |spec|
   spec.name          = "API_Fuzzer"
   spec.version       = APIFuzzer::VERSION
   spec.authors       = ["Lalith Rallabhandi"]
-  spec.email         = ["lalith.rallabhandi@shopify.com"]
+  spec.email         = ["lalithr95@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.summary       = %q{APIFuzzer gem builds api for finding security issues through a fuzzer}
+  spec.description   = %q{APIFuzzer gem builds api for finding security issues through a fuzzer}
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
 
