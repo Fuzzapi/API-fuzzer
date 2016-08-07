@@ -1,0 +1,17 @@
+--- 
+rules:
+
+  -
+    description: X-XSS Protection Header is not set properly
+    name: x-xss-protection
+    match: \A[01](; mode=block)?(; report=.*)?\z
+
+  -
+    description: Possible Clickjacking Vulnerability
+    name: x-frame-options
+    match: \A(SAMEORIGIN\z|DENY\z)
+
+  -
+    description: HSTS protection is not enabled in service
+    name: strict-transport-security
+    match: \Amax-age=\d+(; includeSubdomains)?(; preload)?\z
