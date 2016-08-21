@@ -4,4 +4,7 @@ source 'https://rubygems.org'
 
 gem 'http'
 
+group :development do
+  gem 'byebug'
+end
 gemspec
