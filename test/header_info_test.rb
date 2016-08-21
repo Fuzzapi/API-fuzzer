@@ -6,6 +6,7 @@ class APIFuzzer::HeaderInfoTest < Minitest::Test
   def setup
     @response = Http.get('https://www.shopify.ca')
     @info = API_Fuzzer::HeaderInfo.new(@response)
+    p @info
   end
 
   def test_that_it_has_a_version_number

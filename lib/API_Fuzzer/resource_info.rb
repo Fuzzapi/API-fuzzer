@@ -17,7 +17,6 @@ module API_Fuzzer
       end
     end
 
-
     def fetch_rules
       info_rules = File.expand_path('../../../rules', __FILE__)
       @rules = YAML::load_file(File.join(info_rules, "info.yml"))['rules']
@@ -32,7 +31,7 @@ module API_Fuzzer
         @rules.each do |rule|
           headers.each do |header|
             
-            if /#{rule['match'].downcase}/.match(header.downcase)
+            unless /#{rule['match'].downcase}/.match(header.downcase)
               @vulnerability_info << Vulnerability.new(
                 description: rule['description'],
                 value: [header, @response.headers[header].to_s].join(": ")

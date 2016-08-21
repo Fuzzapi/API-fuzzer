@@ -4,8 +4,9 @@ require 'http'
 
 class APIFuzzer::ResourceInfoTest < Minitest::Test
   def setup
-    @response = Http.get('http://demo.testfire.net/bank/login.aspx')
+    @response = HTTP.get('https://shopify.ca')
     @info = API_Fuzzer::ResourceInfo.new(@response)
+    p @info
   end
 
   def test_that_it_has_a_version_number
