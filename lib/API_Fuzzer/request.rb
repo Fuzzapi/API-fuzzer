@@ -1,4 +1,5 @@
 require 'http'
+require 'byebug'
 
 module API_Fuzzer
   class Request
@@ -27,7 +28,7 @@ module API_Fuzzer
 
     def self.set_cookies(options = {})
       cookies = options.delete(:cookies) || []
-      request_object = HTTP.cookies('api_fuzzer' => true)
+      request_object = HTTP.cookies('api_fuzzer' => true).headers("Content-Type" => "application/xml")
       cookies.each do |cookie|
         request_object.cookies(cookie.split(',').first, cookie.split(',').last)
       end
@@ -57,12 +58,12 @@ module API_Fuzzer
       elsif method_get?
         { 'params' => @params }
       else
-        { 'body' => @params }
+        { 'form' => @params }
       end
     end
 
     def self.method_get?
-      @method == 'get'
+      @method.to_s == 'get'
     end
   end
 end
