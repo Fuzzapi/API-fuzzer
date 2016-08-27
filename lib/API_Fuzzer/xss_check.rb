@@ -42,7 +42,7 @@ module API_Fuzzer
           method: method,
           cookies: @cookies
         )
-
+        next if response_json?(response.body)
         vulnerable = check_response?(response.body, payload)
         if success?(response)
           @vulnerabilities << API_Fuzzer::Vulnerability.new(
@@ -66,6 +66,10 @@ module API_Fuzzer
 
     def self.success?(response)
       response.code == 200
+    end
+
+    def response_json?(response)
+      response.headers['Content-Type'].downcase ~= /application\/json/
     end
   end
 end
