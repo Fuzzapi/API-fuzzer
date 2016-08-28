@@ -24,10 +24,11 @@ module API_Fuzzer
       @vulnerabilities = []
 
       fuzz_payloads
-      p @vulnerabilities
+      return @vulnerabilities
     rescue HTTP::ConnectionError => e
       sleep(5)
       fuzz_payloads
+      return @vulnerabilities
     end
 
     protected
