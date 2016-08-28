@@ -24,10 +24,11 @@ module API_Fuzzer
       @vulnerabilities = []
 
       fuzz_payloads
-      p @vulnerabilities
+      return @vulnerabilities
     rescue HTTP::ConnectionError => e
       sleep(5)
       fuzz_payloads
+      return @vulnerabilities
     end
 
     protected
@@ -82,7 +83,7 @@ module API_Fuzzer
     end
 
     def self.response_json?(response)
-      response && response.headers['Content-Type'].downcase =~ /application\/json/
+      response && response.headers['Content-Type'] && response.headers['Content-Type'].downcase =~ /application\/json/
     end
 
     def self.fetch_payloads
