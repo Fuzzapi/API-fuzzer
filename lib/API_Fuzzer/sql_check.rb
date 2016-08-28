@@ -3,28 +3,40 @@ require 'API_Fuzzer/error'
 require 'API_Fuzzer/request'
 
 module API_Fuzzer
-
   class InvalidURLError < StandardError; end
 
-  class XssCheck
+  class SqlCheck
     attr_accessor :parameters
 
     ALLOWED_METHODS = [:get, :post].freeze
-    PAYLOADS = ["\"><script>alert(1)</script>"]
+    PAYLOAD_PATH = '../../../payloads/sql.txt'.freeze
+    DETECT_PATH = '../../../payloads/detect/sql.txt'.freeze
+    PAYLOADS = []
+    SQL_ERRORS = []
 
     def self.scan(options = {})
+      fetch_payloads
       @url = options.delete(:url) || nil
       raise InvalidURLError, "[ERROR] URL missing in argument" unless @url
       @params = options.delete(:params) || {}
-      @params = { :txtSearch => 'abc' }
       @cookies = options.delete(:cookies) || {}
       @json = options.delete(:json) || false
+      @vulnerabilities = []
+
+      fuzz_payloads
+      p @vulnerabilities
+    rescue HTTP::ConnectionError => e
+      sleep(5)
+      fuzz_payloads
+    end
+
+    protected
+
+    def self.fuzz_payloads
       PAYLOADS.each do |payload|
         fuzz_each_payload(payload)
       end
     end
-
-    private
 
     def self.fuzz_each_payload(payload)
       @params.keys.each do |parameter|
@@ -34,7 +46,6 @@ module API_Fuzzer
 
     def self.fuzz_each_parameter(parameter, payload)
       @params[parameter] = payload
-      @vulnerabilities = []
       ALLOWED_METHODS.each do |method|
         response = API_Fuzzer::Request.send_api_request(
           url: @url,
@@ -42,11 +53,11 @@ module API_Fuzzer
           method: method,
           cookies: @cookies
         )
-        next if response_json?(response.body)
+        next if response_json?(response)
         vulnerable = check_response?(response.body, payload)
         if success?(response)
           @vulnerabilities << API_Fuzzer::Vulnerability.new(
-            description: "Possible XSS in #{method} #{@url} parameter: #{@parameter}",
+            description: "Possible SQL injection in #{method} #{@url} parameter: #{parameter}",
             value: "[PAYLOAD] #{payload}"
           ) if vulnerable
         else
@@ -54,12 +65,14 @@ module API_Fuzzer
           #Error
         end
       end
-      p @vulnerabilities.uniq
     end
 
     def self.check_response?(body, payload)
-      if body.to_s.match(payload)
-        true
+      SQL_ERRORS.each do |error|
+        error = Regexp.escape(error)
+        if body.to_s.downcase.match(error)
+          return true
+        end
       end
       false
     end
@@ -68,8 +81,21 @@ module API_Fuzzer
       response.code == 200
     end
 
-    def response_json?(response)
-      response.headers['Content-Type'].downcase ~= /application\/json/
+    def self.response_json?(response)
+      response && response.headers['Content-Type'].downcase =~ /application\/json/
+    end
+
+    def self.fetch_payloads
+      file = File.expand_path(PAYLOAD_PATH, __FILE__)
+
+      File.readlines(file).each do |line|
+        PAYLOADS << line
+      end
+
+      file = File.expand_path(DETECT_PATH, __FILE__)
+      File.readlines(file).each do |line|
+        SQL_ERRORS << line.downcase
+      end
     end
   end
 end
