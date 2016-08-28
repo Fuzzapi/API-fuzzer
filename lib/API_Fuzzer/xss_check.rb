@@ -16,7 +16,6 @@ module API_Fuzzer
       @url = options.delete(:url) || nil
       raise InvalidURLError, "[ERROR] URL missing in argument" unless @url
       @params = options.delete(:params) || {}
-      @params = { :txtSearch => 'abc' }
       @cookies = options.delete(:cookies) || {}
       @json = options.delete(:json) || false
       PAYLOADS.each do |payload|

@@ -54,7 +54,8 @@ module API_Fuzzer
           cookies: @cookies
         )
         next if response_json?(response)
-        vulnerable = check_response?(response.body, payload)
+        body = response.body.to_s.downcase
+        vulnerable = check_response?(body, payload)
         if success?(response)
           @vulnerabilities << API_Fuzzer::Vulnerability.new(
             description: "Possible SQL injection in #{method} #{@url} parameter: #{parameter}",
@@ -69,8 +70,7 @@ module API_Fuzzer
 
     def self.check_response?(body, payload)
       SQL_ERRORS.each do |error|
-        error = Regexp.escape(error)
-        if body.to_s.downcase.match(error)
+        if body.match(error.chomp)
           return true
         end
       end
@@ -87,7 +87,6 @@ module API_Fuzzer
 
     def self.fetch_payloads
       file = File.expand_path(PAYLOAD_PATH, __FILE__)
-
       File.readlines(file).each do |line|
         PAYLOADS << line
       end
