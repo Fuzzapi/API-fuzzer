@@ -83,7 +83,7 @@ module API_Fuzzer
     end
 
     def self.response_json?(response)
-      response && response.headers['Content-Type'].downcase =~ /application\/json/
+      response && response.headers['Content-Type'] && response.headers['Content-Type'].downcase =~ /application\/json/
     end
 
     def self.fetch_payloads

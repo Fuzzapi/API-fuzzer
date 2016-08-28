@@ -56,7 +56,8 @@ PHP Warning
 Parent Directory
 Permission denied: 'GetObject'
 PostgreSQL query failed: ERROR: parser: parse error
-SQL Server Driver][SQL Server
+SQL Server Driver
+SQL Server
 SQL command not properly ended
 SQLException
 Supplied argument is not a valid PostgreSQL result

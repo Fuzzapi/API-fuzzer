@@ -6,7 +6,7 @@ require 'API_Fuzzer/sql_check'
 module API_Fuzzer
   class InvalidURLError < StandardError; end
   class SqlBlindCheck < SqlCheck
-    PAYLOAD_PATH = '../../../payloads/sql_blind.txt'.freeze
+    PAYLOAD_PATH = '../../../payloads/blind_sql.txt'.freeze
     PAYLOADS = []
     SQL_ERRORS = []
     SCAN_TIME = '20'
@@ -28,7 +28,7 @@ module API_Fuzzer
           @vulnerabilities << API_Fuzzer::Vulnerability.new(
             description: "Possible blind SQL injection in #{method} #{@url} parameter: #{parameter}",
             value: "[PAYLOAD] #{payload}"
-          ) if vulnerable
+          )
         end
       end
     end
