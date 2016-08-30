@@ -7,7 +7,7 @@ module API_Fuzzer
 
   class ResourceInfo
     # Accepts response and performs rules match based on the ruleset
-    def initialize(response)
+    def self.scan(response)
       @response = response
       if @response
         fetch_rules
@@ -17,12 +17,12 @@ module API_Fuzzer
       end
     end
 
-    def fetch_rules
+    def self.fetch_rules
       info_rules = File.expand_path('../../../rules', __FILE__)
       @rules = YAML::load_file(File.join(info_rules, "info.yml"))['rules']
     end
 
-    def scan_rules
+    def self.scan_rules
       @vulnerability_info = []
 
       if @rules
@@ -31,7 +31,7 @@ module API_Fuzzer
         @rules.each do |rule|
           headers.each do |header|
             
-            unless /#{rule['match'].downcase}/.match(header.downcase)
+            if /#{rule['match'].downcase}/.match(header.downcase)
               @vulnerability_info << Vulnerability.new(
                 description: rule['description'],
                 value: [header, @response.headers[header].to_s].join(": ")
@@ -41,7 +41,7 @@ module API_Fuzzer
           end
         end
       end
-      @vulnerability_info
+      return @vulnerability_info
     end
   end
 

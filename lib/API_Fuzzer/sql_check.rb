@@ -16,11 +16,11 @@ module API_Fuzzer
 
     def self.scan(options = {})
       fetch_payloads
-      @url = options.delete(:url) || nil
+      @url = options[:url] || nil
       raise InvalidURLError, "[ERROR] URL missing in argument" unless @url
-      @params = options.delete(:params) || {}
-      @cookies = options.delete(:cookies) || {}
-      @json = options.delete(:json) || false
+      @params = options[:params] || {}
+      @cookies = options[:cookies] || {}
+      @json = options[:json] || false
       @vulnerabilities = []
 
       fuzz_payloads
@@ -63,7 +63,7 @@ module API_Fuzzer
             value: "[PAYLOAD] #{payload}"
           ) if vulnerable
         else
-          API_Fuzzer::Error.new(url: @url, status: response.status, value: @response.body)
+          @vulnerabilities << API_Fuzzer::Error.new(url: "#{method} #{@url}", status: response.status, value: response.body)
           #Error
         end
       end

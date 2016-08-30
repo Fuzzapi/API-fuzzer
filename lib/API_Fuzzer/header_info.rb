@@ -5,9 +5,7 @@ module API_Fuzzer
 
   class InvalidResponse < StandardError; end
   class HeaderInfo
-    attr_accessor :response
-
-    def initialize(response)
+    def self.scan(response)
       @response = response
       @headers = @response.headers
       load_header_rules
@@ -15,7 +13,7 @@ module API_Fuzzer
       raise InvalidResponse, "Invalid response argument passed" unless @response
     end
 
-    def scan_headers
+    def self.scan_headers
      @vulnerabilities = []
 
       @rules.each do |rule|
@@ -38,7 +36,7 @@ module API_Fuzzer
       @vulnerabilities
     end
 
-    def load_header_rules
+    def self.load_header_rules
       info_rules = File.expand_path('../../../rules', __FILE__)
       @rules = YAML::load_file(File.join(info_rules, "headers.yml"))['rules']
     end

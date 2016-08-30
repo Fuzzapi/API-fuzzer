@@ -13,14 +13,16 @@ module API_Fuzzer
     PAYLOADS = ["\"><script>alert(1)</script>"]
 
     def self.scan(options = {})
-      @url = options.delete(:url) || nil
+      @url = options[:url] || nil
       raise InvalidURLError, "[ERROR] URL missing in argument" unless @url
-      @params = options.delete(:params) || {}
-      @cookies = options.delete(:cookies) || {}
-      @json = options.delete(:json) || false
+      @params = options[:params] || {}
+      @cookies = options[:cookies] || {}
+      @json = options[:json] || false
+      @vulnerabilities = []
       PAYLOADS.each do |payload|
         fuzz_each_payload(payload)
       end
+      @vulnerabilities
     end
 
     private
@@ -33,7 +35,7 @@ module API_Fuzzer
 
     def self.fuzz_each_parameter(parameter, payload)
       @params[parameter] = payload
-      @vulnerabilities = []
+
       ALLOWED_METHODS.each do |method|
         response = API_Fuzzer::Request.send_api_request(
           url: @url,
@@ -43,22 +45,23 @@ module API_Fuzzer
         )
         next if response_json?(response)
         vulnerable = check_response?(response.body, payload)
+
         if success?(response)
           @vulnerabilities << API_Fuzzer::Vulnerability.new(
             description: "Possible XSS in #{method} #{@url} parameter: #{@parameter}",
             value: "[PAYLOAD] #{payload}"
           ) if vulnerable
+
         else
-          API_Fuzzer::Error.new(url: @url, status: response.status, value: @response.body)
+          API_Fuzzer::Error.new(url: @url, status: response.status, value: response.body)
           #Error
         end
       end
-      p @vulnerabilities.uniq
     end
 
     def self.check_response?(body, payload)
-      if body.to_s.match(payload)
-        true
+      if body.to_s.include?(payload)
+        return true
       end
       false
     end
