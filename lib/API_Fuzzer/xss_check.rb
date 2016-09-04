@@ -22,7 +22,7 @@ module API_Fuzzer
       PAYLOADS.each do |payload|
         fuzz_each_payload(payload)
       end
-      @vulnerabilities
+      @vulnerabilities.uniq { |vuln| vuln.description }
     end
 
     private
@@ -43,18 +43,21 @@ module API_Fuzzer
           method: method,
           cookies: @cookies
         )
-        next if response_json?(response)
-        vulnerable = check_response?(response.body, payload)
 
-        if success?(response)
-          @vulnerabilities << API_Fuzzer::Vulnerability.new(
-            description: "Possible XSS in #{method} #{@url} parameter: #{@parameter}",
-            value: "[PAYLOAD] #{payload}"
-          ) if vulnerable
-
+        if response_json?(response)
+          body = JSON.parse(response.body)
         else
-          API_Fuzzer::Error.new(url: @url, status: response.status, value: response.body)
-          #Error
+          vulnerable = check_response?(response.body, payload)
+
+          if success?(response)
+            @vulnerabilities << API_Fuzzer::Vulnerability.new(
+              description: "Possible XSS in #{method} #{@url} parameter: #{@parameter}",
+              value: "[PAYLOAD] #{payload}",
+              type: 'MEDIUM'
+            ) if vulnerable
+          else
+            API_Fuzzer::Error.new(description: "[ERROR] #{method} #{@url}", status: response.status, value: response.body)
+          end
         end
       end
     end

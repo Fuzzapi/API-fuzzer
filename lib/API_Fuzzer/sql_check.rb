@@ -9,8 +9,8 @@ module API_Fuzzer
     attr_accessor :parameters
 
     ALLOWED_METHODS = [:get, :post].freeze
-    PAYLOAD_PATH = '../../../payloads/sql.txt'.freeze
-    DETECT_PATH = '../../../payloads/detect/sql.txt'.freeze
+    PAYLOAD_PATH = File.expand_path('../../../payloads/sql.txt', __FILE__)
+    DETECT_PATH = File.expand_path('../../../payloads/detect/sql.txt', __FILE__)
     PAYLOADS = []
     SQL_ERRORS = []
 
@@ -24,11 +24,11 @@ module API_Fuzzer
       @vulnerabilities = []
 
       fuzz_payloads
-      return @vulnerabilities
+      return @vulnerabilities.uniq_by { |vuln| vuln.description }
     rescue HTTP::ConnectionError => e
       sleep(5)
       fuzz_payloads
-      return @vulnerabilities
+      return @vulnerabilities.uniq_by { |vuln| vuln.description }
     end
 
     protected
@@ -40,31 +40,74 @@ module API_Fuzzer
     end
 
     def self.fuzz_each_payload(payload)
-      @params.keys.each do |parameter|
-        fuzz_each_parameter(parameter, payload)
+      if @params.empty?
+        fragments = URI(@url).path.split("/") - ['']
+        fragments.each do |fragment|
+          url = @url.gsub(fragment, payload)
+          fuzz_each_fragment(url, payload)
+        end
+      else
+        @params.keys.each do |parameter|
+          fuzz_each_parameter(parameter, payload)
+        end
+      end
+    end
+
+    def self.fuzz_each_fragment(url, payload)
+      ALLOWED_METHODS.each  do |method|
+        begin
+          response = API_Fuzzer::Request.send_api_request(
+            url: url,
+            method: method,
+            cookies: @cookies
+          )
+          
+          @vulnerabilities << API_Fuzzer::Error.new(url: "#{method} #{@url}", status: response.status, value: response.body) unless success?(response)
+          body = ''
+          if response_json?(response)
+            body = JSON.parse(response.body)
+          else
+            body = response.body
+          end
+
+          vulnerable = check_response?(body.to_s.downcase, payload)
+          next unless vulnerable
+          @vulnerabilities << API_Fuzzer::Vulnerability.new(
+            description: "Possible SQL injection in #{method} #{@url}",
+            parameter: "URL: #{url}",
+            value: "[PAYLOAD] #{payload}",
+            type: 'HIGH'
+          )
+        rescue Exception => e
+          puts e.message
+        end
       end
     end
 
     def self.fuzz_each_parameter(parameter, payload)
       @params[parameter] = payload
       ALLOWED_METHODS.each do |method|
-        response = API_Fuzzer::Request.send_api_request(
-          url: @url,
-          params: @params,
-          method: method,
-          cookies: @cookies
-        )
-        next if response_json?(response)
-        body = response.body.to_s.downcase
-        vulnerable = check_response?(body, payload)
-        if success?(response)
+        begin
+          response = API_Fuzzer::Request.send_api_request(
+            url: @url,
+            params: @params,
+            method: method,
+            cookies: @cookies
+          )
+
+          @vulnerabilities << API_Fuzzer::Error.new(url: "[ERROR] #{method} #{@url}", status: response.status, value: response.body) unless success?(response)
+          body = response.body.to_s.downcase
+          vulnerable = check_response?(body, payload)
+          next unless vulnerable
+
           @vulnerabilities << API_Fuzzer::Vulnerability.new(
             description: "Possible SQL injection in #{method} #{@url} parameter: #{parameter}",
-            value: "[PAYLOAD] #{payload}"
-          ) if vulnerable
-        else
-          @vulnerabilities << API_Fuzzer::Error.new(url: "#{method} #{@url}", status: response.status, value: response.body)
-          #Error
+            parameter: "parameter: #{@parameter}",
+            value: "[PAYLOAD] #{payload}",
+            type: 'HIGH'
+          )
+        rescue Exception => e
+          puts e.message
         end
       end
     end
