@@ -24,11 +24,11 @@ module API_Fuzzer
       @vulnerabilities = []
 
       fuzz_payloads
-      return @vulnerabilities.uniq_by { |vuln| vuln.description }
+      return @vulnerabilities.uniq { |vuln| vuln.description }
     rescue HTTP::ConnectionError => e
       sleep(5)
       fuzz_payloads
-      return @vulnerabilities.uniq_by { |vuln| vuln.description }
+      return @vulnerabilities.uniq { |vuln| vuln.description }
     end
 
     protected
