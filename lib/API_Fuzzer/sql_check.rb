@@ -62,7 +62,7 @@ module API_Fuzzer
             cookies: @cookies
           )
           
-          @vulnerabilities << API_Fuzzer::Error.new(url: "#{method} #{@url}", status: response.status, value: response.body) unless success?(response)
+          @vulnerabilities << API_Fuzzer::Error.new(description: "#{method} #{@url}", status: response.status, value: response.body) unless success?(response)
           body = ''
           if response_json?(response)
             body = JSON.parse(response.body)
@@ -95,7 +95,7 @@ module API_Fuzzer
             cookies: @cookies
           )
 
-          @vulnerabilities << API_Fuzzer::Error.new(url: "[ERROR] #{method} #{@url}", status: response.status, value: response.body) unless success?(response)
+          @vulnerabilities << API_Fuzzer::Error.new(description: "[ERROR] #{method} #{@url}", status: response.status, value: response.body) unless success?(response)
           body = response.body.to_s.downcase
           vulnerable = check_response?(body, payload)
           next unless vulnerable
