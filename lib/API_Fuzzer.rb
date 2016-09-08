@@ -11,6 +11,7 @@ module API_Fuzzer
   def self.scan(options = {})
     vulnerabilities = []
     options.freeze
+
     vulnerabilities << static_analysis(options)
     vulnerabilities << API_Fuzzer::XssCheck.scan(options)
     vulnerabilities << API_Fuzzer::SqlCheck.scan(options)
@@ -19,8 +20,7 @@ module API_Fuzzer
   end
 
   def self.static_analysis(options = {})
-    url = options[:url]
-    response = API_Fuzzer::Request.send_api_request(url: url)
+    response = API_Fuzzer::Request.send_api_request(url: options[:url], cookies: options[:cookies])
     issues = []
 
     issues << API_Fuzzer::ResourceInfo.scan(response)

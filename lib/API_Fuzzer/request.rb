@@ -27,10 +27,10 @@ module API_Fuzzer
     private
 
     def self.set_cookies(options = {})
-      cookies = options.delete(:cookies) || []
+      cookies = options.delete(:cookies) || {}
       request_object = HTTP.cookies('api_fuzzer' => true).headers("Content-Type" => "application/xml")
-      cookies.each do |cookie|
-        request_object.cookies(cookie.split(',').first, cookie.split(',').last)
+      cookies.each do |cookie, value|
+        request_object.cookies(cookie, value)
       end
       request_object
     end
