@@ -34,7 +34,7 @@ module API_Fuzzer
             headers.each do |header|
               
               if /#{rule['match'].downcase}/.match(header.downcase)
-                @vulnerability_info << Vulnerability.new(
+                @vulnerability_info << API_Fuzzer::Vulnerability.new(
                   description: rule['description'],
                   value: [header, @response.headers[header].to_s].join(": "),
                   type: 'INFORMATIVE'
