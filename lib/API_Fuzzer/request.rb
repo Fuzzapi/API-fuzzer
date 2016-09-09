@@ -1,5 +1,4 @@
 require 'http'
-require 'byebug'
 
 module API_Fuzzer
   class Request
