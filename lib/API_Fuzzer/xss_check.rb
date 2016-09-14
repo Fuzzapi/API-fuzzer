@@ -10,7 +10,8 @@ module API_Fuzzer
     attr_accessor :parameters
 
     ALLOWED_METHODS = [:get, :post].freeze
-    PAYLOADS = ["\"><script>alert(1)</script>"]
+    PAYLOADS = []
+    PAYLOAD_PATH = File.expand_path('../../../payloads/xss.txt', __FILE__)
 
     def self.scan(options = {})
       @url = options[:url] || nil
@@ -19,6 +20,8 @@ module API_Fuzzer
       @cookies = options[:cookies] || {}
       @json = options[:json] || false
       @vulnerabilities = []
+
+      fetch_payloads
       PAYLOADS.each do |payload|
         fuzz_each_payload(payload)
       end
@@ -75,6 +78,13 @@ module API_Fuzzer
 
     def self.response_json?(response)
       response && response.headers['Content-Type'].downcase =~ /application\/json/
+    end
+
+    def self.fetch_payloads
+      file = File.expand_path(PAYLOAD_PATH, __FILE__)
+      File.readlines(file).each do |line|
+        PAYLOADS << line
+      end
     end
   end
 end

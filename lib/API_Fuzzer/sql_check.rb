@@ -1,20 +1,22 @@
 require 'API_Fuzzer/vulnerability'
 require 'API_Fuzzer/error'
 require 'API_Fuzzer/request'
+require 'byebug'
 
 module API_Fuzzer
   class InvalidURLError < StandardError; end
 
   class SqlCheck
     attr_accessor :parameters
+    attr_accessor :payloads, :sql_errors
 
     ALLOWED_METHODS = [:get, :post].freeze
     PAYLOAD_PATH = File.expand_path('../../../payloads/sql.txt', __FILE__)
     DETECT_PATH = File.expand_path('../../../payloads/detect/sql.txt', __FILE__)
-    PAYLOADS = []
-    SQL_ERRORS = []
 
     def self.scan(options = {})
+      @payloads  = []
+      @sql_errors = []
       fetch_payloads
       @url = options[:url] || nil
       raise InvalidURLError, "[ERROR] URL missing in argument" unless @url
@@ -31,25 +33,32 @@ module API_Fuzzer
       return @vulnerabilities.uniq { |vuln| vuln.description }
     end
 
-    protected
-
     def self.fuzz_payloads
-      PAYLOADS.each do |payload|
+      @payloads.each do |payload|
         fuzz_each_payload(payload)
       end
     end
 
     def self.fuzz_each_payload(payload)
-      if @params.empty?
-        fragments = URI(@url).path.split("/") - ['']
-        fragments.each do |fragment|
-          url = @url.gsub(fragment, payload)
+      uri = URI(@url)
+      path = uri.path
+      query = uri.query
+      base_uri = query.empty? ? path : [path, query].join("?")
+      fragments = base_uri.split(/[\/,?,&]/) - ['']
+      fragments.each do |fragment|
+        if fragment.match(/\A(\w)+=(\w)*\z/)
+          url = @url.gsub(fragment, [fragment, payload].join('')).chomp
+          fuzz_each_fragment(url, payload)
+        else
+          url = @url.gsub(fragment, payload).chomp
           fuzz_each_fragment(url, payload)
         end
-      else
-        @params.keys.each do |parameter|
-          fuzz_each_parameter(parameter, payload)
-        end
+      end
+
+      return if @params.empty?
+
+      @params.keys.each do |parameter|
+        fuzz_each_parameter(parameter, payload)
       end
     end
 
@@ -113,8 +122,9 @@ module API_Fuzzer
     end
 
     def self.check_response?(body, payload)
-      SQL_ERRORS.each do |error|
+      @sql_errors.each do |error|
         if body.match(error.chomp)
+          puts error
           return true
         end
       end
@@ -132,12 +142,12 @@ module API_Fuzzer
     def self.fetch_payloads
       file = File.expand_path(PAYLOAD_PATH, __FILE__)
       File.readlines(file).each do |line|
-        PAYLOADS << line
+        @payloads << line
       end
 
       file = File.expand_path(DETECT_PATH, __FILE__)
       File.readlines(file).each do |line|
-        SQL_ERRORS << line.downcase
+        @sql_errors << line.downcase
       end
     end
   end
