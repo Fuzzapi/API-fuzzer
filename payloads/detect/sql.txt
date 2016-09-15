@@ -77,11 +77,10 @@ data source=
 detected an internal error [IBM][CLI Driver][DB2/6000]
 include_path
 invalid query
-is not allowed to access
+is not allowed to access 
 mySQL error with query
 mysql error
 on MySQL result index
-server at
 server object error
 supplied argument is not a valid MySQL result resource
 unexpected end of SQL command
