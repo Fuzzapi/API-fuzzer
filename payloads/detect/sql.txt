@@ -75,16 +75,12 @@ Warning: pg_connect(): Unable to connect to PostgreSQL server: FATAL
 You have an error in your SQL syntax near
 data source=
 detected an internal error [IBM][CLI Driver][DB2/6000]
-error
 include_path
 invalid query
 is not allowed to access
-line
-missing expression
 mySQL error with query
 mysql error
 on MySQL result index
-on line
 server at
 server object error
 supplied argument is not a valid MySQL result resource
