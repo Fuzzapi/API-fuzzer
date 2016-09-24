@@ -5,6 +5,7 @@ require 'API_Fuzzer/sql_check'
 require 'API_Fuzzer/sql_blind_check'
 require 'API_Fuzzer/xss_check'
 require 'API_Fuzzer/request'
+require 'API_Fuzzer/engine'
 
 module API_Fuzzer
   # Scans all the checks
@@ -16,6 +17,7 @@ module API_Fuzzer
     vulnerabilities << API_Fuzzer::XssCheck.scan(options)
     vulnerabilities << API_Fuzzer::SqlCheck.scan(options)
     vulnerabilities << API_Fuzzer::SqlBlindCheck.scan(options)
+    API_Fuzzer::XxeCheck.scan(options)
     vulnerabilities.uniq.flatten
   end
 

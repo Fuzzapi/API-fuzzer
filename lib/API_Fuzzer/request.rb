@@ -10,6 +10,7 @@ module API_Fuzzer
         @params = options.delete(:params) || {}
         @method = options.delete(:method) || :get
         @json = options.delete(:json) ? true : false
+        @body = options.delete(:body) ? true : false
         @request = set_cookies(options)
         send_request
       end
@@ -56,6 +57,8 @@ module API_Fuzzer
         { 'json' => @params }
       elsif method_get?
         { 'params' => @params }
+      elsif @body
+        { 'body' => @params }
       else
         { 'form' => @params }
       end
