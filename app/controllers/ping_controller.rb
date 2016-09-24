@@ -1,13 +1,18 @@
 class PingController < ActionController::Base
   def index
-    sha = params[:id]
-    scan = Scan.find_by_sid(sha)
-    scan.vulnerabilities.create!(
+    @scan = Scan.find(params[:id])
+    @scan.vulnerabilities.create!(
       status: 'HIGH',
       class_type: 'Vulnerability',
-      description: 'Possible XXE vulnerability in #{scan.url}',
-      value: params[:body]
-    ) if scan
-    render :ok
+      description: 'Possible XXE vulnerability in #{@scan.url}',
+      value: body
+    ) if @scan
+    render json: { status: :ok }
+  end
+
+  private
+
+  def body
+    @scan.parameters.gsub(/\>\s*[a-zA-Z0-9]*\s*\<\//, '>&xxe;<')
   end
 end
