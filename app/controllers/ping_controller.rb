@@ -4,7 +4,7 @@ class PingController < ActionController::Base
     @scan.vulnerabilities.create!(
       status: 'HIGH',
       class_type: 'Vulnerability',
-      description: 'Possible XXE vulnerability in #{@scan.url}',
+      description: "Possible XXE vulnerability in #{@scan.url}",
       value: body
     ) if @scan
     render json: { status: :ok }
