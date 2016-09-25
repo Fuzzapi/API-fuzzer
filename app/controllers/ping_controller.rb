@@ -10,6 +10,10 @@ class PingController < ActionController::Base
     render json: { status: :ok }
   end
 
+  def pong
+    render json: { status: :ok }
+  end
+
   private
 
   def body

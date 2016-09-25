@@ -70,7 +70,7 @@ module API_Fuzzer
             method: method,
             cookies: @cookies
           )
-          
+
           @vulnerabilities << API_Fuzzer::Error.new(description: "#{method} #{@url}", status: response.status, value: response.body) unless success?(response)
           body = ''
           if response_json?(response)
