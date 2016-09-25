@@ -5,7 +5,7 @@ require 'uri'
 
 module API_Fuzzer
   class RedirectCheck
-    REDIRECT_URL = 'http://127.0.0.1:3000/abc'
+    REDIRECT_URL = 'http://127.0.0.1:3000/ping'
     ALLOWED_METHODS = [:get, :post]
     class << self
       def scan(options = {})
