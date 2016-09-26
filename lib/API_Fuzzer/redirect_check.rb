@@ -31,7 +31,7 @@ module API_Fuzzer
         query = uri.query
         # base_uri = query.nil? ? path : [path, query].join("?")
         fragments = path.split(/[\/,?,&]/) - ['']
-        fragments << query.split('&')
+        fragments << query.split('&') if query
         fragments.flatten!
         fragments.each do |fragment|
           if fragment.match(/\A(\w+)=(.?*)\z/) && valid_url?($2)
