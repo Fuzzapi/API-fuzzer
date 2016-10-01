@@ -2,7 +2,6 @@ require 'API_Fuzzer/vulnerability'
 require 'API_Fuzzer/error'
 require 'API_Fuzzer/request'
 require 'API_Fuzzer/sql_check'
-require 'byebug'
 
 module API_Fuzzer
   class InvalidURLError < StandardError; end
