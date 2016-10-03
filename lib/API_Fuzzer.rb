@@ -9,6 +9,7 @@ require 'API_Fuzzer/engine'
 require 'API_Fuzzer/xxe_check'
 require 'API_Fuzzer/redirect_check'
 require 'API_Fuzzer/idor_check'
+require 'API_Fuzzer/rate_limit_check'
 
 module API_Fuzzer
   # Scans all the checks
@@ -22,6 +23,7 @@ module API_Fuzzer
     vulnerabilities << API_Fuzzer::SqlBlindCheck.scan(options)
     vulnerabilities << API_Fuzzer::RedirectCheck.scan(options)
     vulnerabilities << API_Fuzzer::IdorCheck.scan(options)
+    vulnerabilities << API_Fuzzer::RateLimitCheck(options)
     API_Fuzzer::XxeCheck.scan(options)
     vulnerabilities.uniq.flatten
   end
