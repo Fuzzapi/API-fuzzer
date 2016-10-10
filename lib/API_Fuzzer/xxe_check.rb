@@ -9,6 +9,8 @@ module API_Fuzzer
       @url = options[:url] || nil
       @params = options[:params]
       @scan_hash = options[:scan]
+      @cookies = options[:cookies] || {}
+      @headers = options[:headers] || {}
       fuzz_xml_params
     end
 
@@ -28,7 +30,9 @@ module API_Fuzzer
         url: @url,
         params: payload,
         body: true,
-        method: :post
+        method: :post,
+        headers: @headers,
+        cookies: @cookies
       )
     end
 

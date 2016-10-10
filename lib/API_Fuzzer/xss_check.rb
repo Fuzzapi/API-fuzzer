@@ -18,6 +18,7 @@ module API_Fuzzer
       raise InvalidURLError, "[ERROR] URL missing in argument" unless @url
       @params = options[:params] || {}
       @cookies = options[:cookies] || {}
+      @headers = options[:headers] || {}
       @json = options[:json] || false
       @vulnerabilities = []
 
@@ -44,7 +45,8 @@ module API_Fuzzer
           url: @url,
           params: @params,
           method: method,
-          cookies: @cookies
+          cookies: @cookies,
+          headers: @headers
         )
 
         if response_json?(response)

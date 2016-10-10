@@ -23,7 +23,7 @@ module API_Fuzzer
     vulnerabilities << API_Fuzzer::SqlBlindCheck.scan(options)
     vulnerabilities << API_Fuzzer::RedirectCheck.scan(options)
     vulnerabilities << API_Fuzzer::IdorCheck.scan(options)
-    vulnerabilities << API_Fuzzer::RateLimitCheck(options)
+    vulnerabilities << API_Fuzzer::RateLimitCheck.scan(options)
     API_Fuzzer::XxeCheck.scan(options)
     vulnerabilities.uniq.flatten
   end
