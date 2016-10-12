@@ -38,7 +38,7 @@ module API_Fuzzer
       def fuzz_match(resp, resp_without_session, method)
         @vulnerabilities << API_Fuzzer::Vulnerability.new(
           type: 'HIGH',
-          value: "API doesn't have session protection",
+          value: "API doesn't have access control protection",
           description: "Possible IDOR in #{method} #{@url}"
         ) if resp.body.to_s == resp_without_session.body.to_s
       end
