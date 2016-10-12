@@ -22,6 +22,7 @@ module API_Fuzzer
       @params = options[:params] || {}
       @cookies = options[:cookies] || {}
       @json = options[:json] || false
+      @headers = options[:headers] || {}
       @vulnerabilities = []
 
       fuzz_payloads
@@ -67,7 +68,8 @@ module API_Fuzzer
           response = API_Fuzzer::Request.send_api_request(
             url: url,
             method: method,
-            cookies: @cookies
+            cookies: @cookies,
+            headers: @headers
           )
 
           @vulnerabilities << API_Fuzzer::Error.new(description: "#{method} #{@url}", status: response.status, value: response.body) unless success?(response)
@@ -100,7 +102,8 @@ module API_Fuzzer
             url: @url,
             params: @params,
             method: method,
-            cookies: @cookies
+            cookies: @cookies,
+            headers: @headers
           )
 
           @vulnerabilities << API_Fuzzer::Error.new(description: "[ERROR] #{method} #{@url}", status: response.status, value: response.body) unless success?(response)

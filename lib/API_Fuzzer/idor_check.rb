@@ -9,6 +9,7 @@ module API_Fuzzer
         @url = options[:url]
         @params = options[:params]
         @methods = options[:method]
+        @headers = options[:headers] || {}
         @cookies = options[:cookies]
         @vulnerabilities = []
 
@@ -22,6 +23,7 @@ module API_Fuzzer
             url: @url,
             params: @params,
             method: method,
+            headers: @headers,
             cookies: @cookies
           )
 

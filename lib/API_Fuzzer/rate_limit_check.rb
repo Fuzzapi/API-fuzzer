@@ -6,6 +6,7 @@ module API_Fuzzer
     def self.scan(options = {})
       @url = options[:url]
       @params = options[:params] || {}
+      @headers = options[:headers] || {}
       @cookies = options[:cookies] || {}
       @vulnerabilities = []
       @limit = options[:limit] || 50
@@ -24,6 +25,7 @@ module API_Fuzzer
           url: @url,
           method: method,
           cookies: @cookies,
+          headers: @headers,
           params: @params
         )
       end
@@ -55,6 +57,7 @@ module API_Fuzzer
         url: @url,
         method: method,
         cookies: @cookies,
+        headers: @headers,
         params: @params
       )
     end

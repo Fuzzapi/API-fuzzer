@@ -28,7 +28,8 @@ module API_Fuzzer
           url: @url,
           params: @params,
           method: method,
-          cookies: @cookies
+          cookies: @cookies,
+          headers: @headers
         )
         end_time = Time.now
         diff = end_time - start_time

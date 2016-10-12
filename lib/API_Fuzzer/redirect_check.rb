@@ -13,6 +13,7 @@ module API_Fuzzer
         @params = options[:params] || {}
         @cookies = options[:cookies] || {}
         @json = options[:json] || false
+        @headers = options[:headers] || {}
 
         @vulnerabilities = []
         fuzz_payload
@@ -56,7 +57,8 @@ module API_Fuzzer
               url: url,
               method: method,
               cookies: @cookies,
-              params: @params
+              params: @params,
+              headers: @headers
             )
 
             @vulnerabilities << API_Fuzzer::Vulnerability.new(
@@ -80,7 +82,8 @@ module API_Fuzzer
               url: @url,
               method: method,
               cookies: @cookies,
-              params: params
+              params: params,
+              headers: @headers
             )
 
             @vulnerabilities << API_Fuzzer::Vulnerability.new(

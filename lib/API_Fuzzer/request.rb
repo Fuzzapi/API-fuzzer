@@ -11,7 +11,7 @@ module API_Fuzzer
         @method = options.delete(:method) || :get
         @json = options.delete(:json) ? true : false
         @body = options.delete(:body) ? true : false
-        @request = set_cookies(options)
+        @request = set_cookies_headers(options)
         send_request
       end
     end
@@ -26,12 +26,10 @@ module API_Fuzzer
 
     private
 
-    def self.set_cookies(options = {})
+    def self.set_cookies_headers(options = {})
       cookies = options.delete(:cookies) || {}
-      request_object = HTTP.cookies('api_fuzzer' => true).headers("Content-Type" => "application/xml")
-      cookies.each do |cookie, value|
-        request_object.cookies(cookie, value)
-      end
+      headers = options.delete(:headers) || {}
+      request_object = HTTP.headers(headers).cookies(cookies)
       request_object
     end
 
