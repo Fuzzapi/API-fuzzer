@@ -33,6 +33,7 @@ module API_Fuzzer
             method: method
           )
 
+          fuzz_sensitive_files(response, method)
           fuzz_match(response, response_without_session, method)
         end
       end
@@ -43,6 +44,18 @@ module API_Fuzzer
           value: "API doesn't have access control protection",
           description: "Possible IDOR in #{method} #{@url}"
         ) if resp.body.to_s == resp_without_session.body.to_s
+      end
+
+      def fuzz_sensitive_files(response, method)
+        FILE_URL = /^((https?:\/\/)?(www\.)?([\da-z\.-]+)\.([a-z\.]{2,6})\/[\w \.-]+?\.(pdf|doc|docs|rtf)([a-zA-Z0-9=?]*?))$/
+        flagged_url = response.body.to_s.scan(FILE_URL) || []
+        flagged_url.each do |url|
+          @vulnerabilities << API_Fuzzer::Vulnerability.new(
+            type: 'MEDIUM',
+            value: "File #{url} can be accessed without proper permissions",
+            description: "Access control violation in #{method} #{url}"
+          )
+        end
       end
     end
   end
