@@ -11,13 +11,15 @@ module API_Fuzzer
         @url = options[:url] || nil
         @params = options[:params] || {}
         @cookies = options[:cookies] || {}
-        @methods = options[:method]
+        @methods = options[:method] || [:get]
         @headers = options[:headers] || {}
         @json = options[:json] || false
         @vulnerabilities = []
 
         fuzz_csrf
         @vulnerabilities.uniq { |vuln| vuln.description }
+      rescue Exception => e
+        Rails.logger.info e.message
       end
 
       def fuzz_csrf
@@ -25,7 +27,7 @@ module API_Fuzzer
           type: 'MEDIUM',
           value: 'No Cross-site request forgery protection found in API',
           description: "Cross-site request forgery vulnerability in GET #{@url}"
-        ) if method.map(&:downcase).include? 'get'
+        ) if @methods.map(&:downcase).include?(:get)
       end
 
       def validate_csrf
@@ -33,7 +35,6 @@ module API_Fuzzer
         headers = request.headers
         matched_headers = headers.keys.select { |header| VALID_CSRF_HEADERS.any? { |exp| header.match(exp) } }
         matched_param = params.keys.select { |param| VALID_CSRF_PARAMS.any? { |exp| param.match(exp) } }
-
       end
     end
   end

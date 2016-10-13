@@ -10,6 +10,8 @@ require 'API_Fuzzer/xxe_check'
 require 'API_Fuzzer/redirect_check'
 require 'API_Fuzzer/idor_check'
 require 'API_Fuzzer/rate_limit_check'
+require 'API_Fuzzer/csrf_check'
+require 'API_Fuzzer/privilege_escalation_check'
 
 module API_Fuzzer
   # Scans all the checks
@@ -24,6 +26,7 @@ module API_Fuzzer
     vulnerabilities << API_Fuzzer::RedirectCheck.scan(options)
     vulnerabilities << API_Fuzzer::IdorCheck.scan(options)
     vulnerabilities << API_Fuzzer::RateLimitCheck.scan(options)
+    vulnerabilities << API_Fuzzer::CsrfCheck.scan(options)
     vulnerabilities << API_Fuzzer::PrivilegeEscalationCheck.scan(options)
     API_Fuzzer::XxeCheck.scan(options)
     vulnerabilities.uniq.flatten

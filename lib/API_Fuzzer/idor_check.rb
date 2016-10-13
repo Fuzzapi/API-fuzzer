@@ -47,8 +47,8 @@ module API_Fuzzer
       end
 
       def fuzz_sensitive_files(response, method)
-        FILE_URL = /^((https?:\/\/)?(www\.)?([\da-z\.-]+)\.([a-z\.]{2,6})\/[\w \.-]+?\.(pdf|doc|docs|rtf)([a-zA-Z0-9=?]*?))$/
-        flagged_url = response.body.to_s.scan(FILE_URL) || []
+        file_url = /^((https?:\/\/)?(www\.)?([\da-z\.-]+)\.([a-z\.]{2,6})\/[\w \.-]+?\.(pdf|doc|docs|rtf)([a-zA-Z0-9=?]*?))$/
+        flagged_url = response.body.to_s.scan(file_url) || []
         flagged_url.each do |url|
           @vulnerabilities << API_Fuzzer::Vulnerability.new(
             type: 'MEDIUM',
