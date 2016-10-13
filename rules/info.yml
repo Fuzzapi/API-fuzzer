@@ -1,7 +1,7 @@
 ---
 rules:
-  
-  - 
+
+  -
     #Server
     description: Information Disclosure of Server version
     match: server
@@ -9,12 +9,12 @@ rules:
     # Powered-by Header
     description: Information Disclosure through x-powered-by
     match: x-powered-by
-  
+
   -
     # ASP.NET MVC version
     description: Information Disclosure of APS.NET MVC version
     match: x-aspnetmvc-version
-  
+
   -
     # ASP.NET version
     description: Information Disclosure of ASP.NET version
