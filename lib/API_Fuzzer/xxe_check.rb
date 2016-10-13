@@ -23,7 +23,7 @@ module API_Fuzzer
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE foo [
 <!ELEMENT foo ANY >
-<!ENTITY xxe SYSTEM "http://localhost:3000/ping/#{@scan_hash}" >]>
+<!ENTITY xxe SYSTEM "http://127.0.0.1:3000/ping/#{@scan_hash}" >]>
       XXEPAYLOAD
       payload << body
       API_Fuzzer::Request.send_api_request(
