@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{APIFuzzer gem builds api for finding security issues through a fuzzer}
   spec.description   = %q{APIFuzzer gem builds api for finding security issues through a fuzzer}
-  spec.homepage      = "https://github.com/lalithr95/API_Fuzzer"
+  spec.homepage      = "https://github.com/lalithr95/API-Fuzzer"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
