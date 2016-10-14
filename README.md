@@ -1,4 +1,4 @@
-# APIFuzzer
+# API Fuzzer
 
 `API_Fuzzer` gem accepts a API request as input and returns vulnerabilities possible in the API. Following are the main check involved in API_Fuzzer gem
 
@@ -88,3 +88,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
+Copyrights [Fuzzdb](https://github.com/fuzzdb-project/fuzzdb) for fuzzing payloads
