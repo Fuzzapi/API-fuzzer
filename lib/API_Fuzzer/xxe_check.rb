@@ -25,6 +25,7 @@ module API_Fuzzer
 <!ELEMENT foo ANY >
 <!ENTITY xxe SYSTEM "http://127.0.0.1:3000/ping/#{@scan_hash}" >]>
       XXEPAYLOAD
+
       payload << body
       API_Fuzzer::Request.send_api_request(
         url: @url,
