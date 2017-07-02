@@ -51,14 +51,16 @@ module API_Fuzzer
     end
 
     def self.set_params
+      ctx = OpenSSL::SSL::SSLContext.new
+      ctx.verify_mode = OpenSSL::SSL::VERIFY_NONE
       if @json && !method_get?
-        { 'json' => @params }
+        { 'json' => @params, 'ssl_context' => ctx }
       elsif method_get?
-        { 'params' => @params }
+        { 'params' => @params, 'ssl_context' => ctx }
       elsif @body
-        { 'body' => @params }
+        { 'body' => @params, 'ssl_context' => ctx }
       else
-        { 'form' => @params }
+        { 'form' => @params, 'ssl_context' => ctx  }
       end
     end
 
